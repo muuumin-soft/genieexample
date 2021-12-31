@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+
+<body>
+    <form>
+        <button type="button" onclick="getTaroMessage();">太郎</button>
+    </form>
+    <div id="saymessage"></div>
+    <script>
+        function requestAjax(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    callback(this.response);
+                }
+            };
+            xhr.responseType = 'json';
+            xhr.open('GET', url, true);
+            xhr.send();
+        };
+
+        function getTaroMessage() {
+            requestAjax("getTaroMessageJson2", function (response) {
+                let json = JSON.parse(JSON.stringify(response));
+                let e = document.getElementById("saymessage");
+                e.innerHTML += `ID${json.id}番の${json.name}です。親のIDは${json.parents}番です.<br>`;
+            });
+        }
+    </script>
+</body>
+
+</html>
