@@ -12,20 +12,24 @@
     </form>
     <div id="saymessage"></div>
     <script>
-        function getTaroMessage() {
+        function requestAjax(url, callback) {
             var xhr = new XMLHttpRequest();
-            //通信の状態が変わった時、responseに対して何をするかを登録
             xhr.onreadystatechange = function () {
-                //readyState=4は通信完了、status=200は成功を意味する
                 if (this.readyState == 4 && this.status == 200) {
-                    let json = JSON.parse(JSON.stringify(this.response));
-                    let e = document.getElementById("saymessage");
-                    e.innerHTML += json.message + "<br>";
+                    callback(this.response);
                 }
             };
             xhr.responseType = 'json';
-            xhr.open('GET', "getTaroMessageJson", true);
+            xhr.open('GET', url, true);
             xhr.send();
+        };
+
+        function getTaroMessage() {
+            requestAjax("getTaroMessageJson", function (response) {
+                let json = JSON.parse(JSON.stringify(response));
+                let e = document.getElementById("saymessage");
+                e.innerHTML += json.message + "<br>";
+            });
         }
     </script>
 </body>
