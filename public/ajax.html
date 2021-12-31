@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+
+<body>
+    <form>
+        <button type="button" onclick="getTaroMessage();">太郎</button>
+    </form>
+    <div id="saymessage"></div>
+    <script>
+        function getTaroMessage() {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    let json = JSON.parse(JSON.stringify(this.response));
+                    let phtml = document.getElementById("saymessage");
+                    let h = "<div>" + json.message + "</div>"
+                    phtml.innerHTML = h;
+                }
+            };
+            xhr.responseType = 'json';
+            xhr.open('GET', "getTaroMessageJson", true);
+            xhr.send();
+        }
+    </script>
+</body>
+
+</html>
