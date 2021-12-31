@@ -14,12 +14,13 @@
     <script>
         function getTaroMessage() {
             var xhr = new XMLHttpRequest();
+            //通信の状態が変わった時、responseに対して何をするかを登録
             xhr.onreadystatechange = function () {
+                //readyState=4は通信完了、status=200は成功を意味する
                 if (this.readyState == 4 && this.status == 200) {
                     let json = JSON.parse(JSON.stringify(this.response));
-                    let phtml = document.getElementById("saymessage");
-                    let h = "<div>" + json.message + "</div>"
-                    phtml.innerHTML = h;
+                    let e = document.getElementById("saymessage");
+                    e.innerHTML += json.message + "<br>";
                 }
             };
             xhr.responseType = 'json';
